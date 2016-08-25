@@ -3,6 +3,7 @@ from flask import render_template
 from flask import jsonify
 from flask import request
 import os
+from io import StringIO
 from sklearn.externals import joblib
 import pandas as pd
 
@@ -18,7 +19,7 @@ def not_found(error):
     return render_template('error.html'), 404
 
 
-@app.route('/api/models/<name>/predict', methods=['POST'])
+@app.route('/api/models/<name>/predict', methods=['POST', 'PUT'])
 def predict_api(name):
     """Make a prediction with a model and return the result.
 
@@ -31,13 +32,20 @@ def predict_api(name):
         ]
     }
     """
-    json_data = request.get_json()
+    if request.method == 'POST':
+        json_data = request.get_json()
 
-    # TODO: Actually use the good format
-    X = pd.Series(json_data)
-    prediction = clfs[name].predict(X.reshape(1, -1))
+        # TODO: Actually use the good format
+        X = pd.Series(json_data)
+        prediction = clfs[name].predict(X.reshape(1, -1))
 
-    return jsonify(result=prediction.tolist())
+        return jsonify(result=prediction.tolist())
+
+    elif request.method == 'PUT':
+        data = request.data.decode("utf-8")
+        X = pd.read_csv(StringIO(data))
+        prediction = clfs[name].predict(X)
+        return jsonify(result=prediction.tolist())
 
 
 @app.route('/api/models/<name>', methods=['PUT'])

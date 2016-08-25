@@ -13,6 +13,11 @@ clfs = {}
 app = Flask(__name__)
 
 
+@app.errorhandler(404)
+def not_found(error):
+    return render_template('error.html'), 404
+
+
 @app.route('/api/models/<name>/predict', methods=['POST'])
 def predict_api(name):
     """Make a prediction with a model and return the result.
@@ -47,7 +52,7 @@ def model(name):
     # Remove from disk
     os.remove(tmp_path)
 
-    return jsonify(status='OK')
+    return jsonify(success=True)
 
 
 @app.route('/models', methods=['GET'])

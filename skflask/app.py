@@ -24,7 +24,7 @@ def predict_api(name):
     """Make a prediction with a model and return the result.
 
     sample_json = {
-        "column_names": ["a", "b", "c"]
+        "column_names": ["a", "b", "c"],
         "values": [
             [1, 4, 9],
             [2, 0, 6],
@@ -33,11 +33,9 @@ def predict_api(name):
     }
     """
     if request.method == 'POST':
-        json_data = request.get_json()
-
-        # TODO: Actually use the good format
-        X = pd.Series(json_data)
-        prediction = clfs[name].predict(X.reshape(1, -1))
+        js = request.get_json()
+        X = pd.DataFrame(js['values'], columns=js['column_names'])
+        prediction = clfs[name].predict(X)
 
         return jsonify(result=prediction.tolist())
 

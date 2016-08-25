@@ -7,5 +7,6 @@ dependencies:
     - flask
     - requests
     - psutil
+    - cloudpickle
     - pip:
         - textblob

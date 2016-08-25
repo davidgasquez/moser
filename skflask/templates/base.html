@@ -1,0 +1,30 @@
+<!doctype html>
+<html class="no-js" lang="en">
+<head>
+  <meta charset="utf-8">
+
+  <title>{% block title %}skflask{% endblock %}</title>
+
+  {% block css %}{% endblock %}
+
+</head>
+
+<body>
+
+  <header>
+    {% include "header.html" %}
+  </header>
+
+  <div id="main" role="main">
+    {% block main %}{% endblock %}
+  </div>
+
+  <footer>
+    {% include "footer.html" %}
+  </footer>
+
+  <!-- Additional JavaScript libraries and plugins... -->
+  {% block js %}{% endblock %}
+
+</body>
+</html>

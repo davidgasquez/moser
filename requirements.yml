@@ -1,0 +1,11 @@
+name: root
+
+dependencies:
+    - numpy
+    - pandas
+    - scikit-learn
+    - flask
+    - requests
+    - psutil
+    - pip:
+        - textblob

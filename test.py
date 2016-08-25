@@ -11,19 +11,20 @@ with open(filename, 'rb') as f:
     model = f.read()
     r = requests.put(base_url + '/api/models/test', data=model)
 
-# Make a single prediction
+# Make predictions from JSON
 data = {
-        'sl': 5.5,
-        'sw': 2.8,
-        'pl': 4.1,
-        'pw': 1.2
-    }
-
+    "column_names": ["a", "b", "c", "d"],
+    "values": [
+        [1, 4, 1, 1],
+        [2, 0, 6, 1],
+        [1, 4, 8, 1]
+    ]
+}
 r = requests.post(base_url + '/api/models/test/predict', json=data)
-print(r.json())
+print(r, r.json())
 
-# Make several predictions
+# Make predictions from CSV
 with open('sample_model/unknown.csv', 'rb') as f:
     unknown_data = f.read()
     r = requests.put(base_url + '/api/models/test/predict', data=unknown_data)
-    print(r.json())
+    print(r, r.json())

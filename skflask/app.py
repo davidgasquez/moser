@@ -24,7 +24,7 @@ def predict_api(name):
     """Make a prediction with a model and return the result.
 
     sample_json = {
-        "column_names": ['a', 'b', 'c']
+        "column_names": ["a", "b", "c"]
         "values": [
             [1, 4, 9],
             [2, 0, 6],

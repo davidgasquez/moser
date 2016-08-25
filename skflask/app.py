@@ -32,8 +32,11 @@ def predict_api(name):
     }
     """
     json_data = request.get_json()
+
+    # TODO: Actually use the good format
     X = pd.Series(json_data)
     prediction = clfs[name].predict(X.reshape(1, -1))
+
     return jsonify(result=prediction.tolist())
 
 

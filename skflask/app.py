@@ -3,7 +3,8 @@ from flask import render_template
 from flask import jsonify
 from flask import request
 import os
-from io import StringIO
+import cloudpickle
+# from io import StringIO
 from sklearn.externals import joblib
 import pandas as pd
 
@@ -24,7 +25,7 @@ def predict_api(name):
     """Make a prediction with a model and return the result.
 
     sample_json = {
-        "column_names": ["a", "b", "c"],
+        "features": ["a", "b", "c"],
         "values": [
             [1, 4, 9],
             [2, 0, 6],
@@ -32,18 +33,27 @@ def predict_api(name):
         ]
     }
     """
-    if request.method == 'POST':
-        js = request.get_json()
-        X = pd.DataFrame(js['values'], columns=js['column_names'])
-        prediction = clfs[name].predict(X)
+    js = request.get_json()
 
-        return jsonify(result=prediction.tolist())
+    if clfs[name]['features'] != js['features']:
+        return 'Not the sames features or order.'
 
-    elif request.method == 'PUT':
-        data = request.data.decode("utf-8")
-        X = pd.read_csv(StringIO(data))
-        prediction = clfs[name].predict(X)
-        return jsonify(result=prediction.tolist())
+    X = pd.DataFrame(js['values'], columns=js['features'])
+
+    # Preprocessing function
+    if clfs.get(name).get('preprocessing'):
+        f = cloudpickle.loads(clfs[name]['preprocessing'])
+        X = f(X)
+
+    prediction = clfs.get(name)['model'].predict(X)
+
+    return jsonify(result=prediction.tolist())
+
+    # elif request.method == 'PUT':
+    #     data = request.data.decode("utf-8")
+    #     X = pd.read_csv(StringIO(data))
+    #     prediction = clfs[name].predict(X)
+    #     return jsonify(result=prediction.tolist())
 
 
 @app.route('/api/models/<name>', methods=['PUT'])
@@ -68,6 +78,11 @@ def model(name):
 def list_models():
         """List loaded models."""
         return jsonify(list(clfs.keys()))
+
+
+@app.route('/models/<name>', methods=['GET'])
+def print_model(name):
+        return jsonify(list(clfs[name]))
 
 
 @app.route('/models/<name>/predict', methods=['GET'])

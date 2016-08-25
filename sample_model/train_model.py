@@ -4,7 +4,7 @@ from sklearn.preprocessing import LabelEncoder
 from sklearn.externals import joblib
 
 # Read Data
-iris = pd.read_csv('data/iris.csv', header=None,
+iris = pd.read_csv('iris.csv', header=None,
                    names=['sepal_length', 'sepal_width',
                           'petal_length', 'petal_width', 'class'])
 
@@ -21,4 +21,4 @@ clf = RandomForestClassifier()
 clf.fit(X, y)
 
 # Picke classifier
-joblib.dump(clf, 'model/model.pkl', compress=9)
+joblib.dump(clf, 'model.pkl', compress=9)

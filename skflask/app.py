@@ -17,12 +17,11 @@ def predict():
     if request.method == 'POST':
         json_data = request.get_json()
         print(json_data)
-        X = pd.DataFrame(json_data)
-        prediction = clf.predict(X)
-        return jsonify(result=prediction.tolist())
+        # X = pd.DataFrame(json_data)
+        # prediction = clf.predict(X)
+        # return jsonify(result=prediction.tolist())
     else:
-        prediction = clf.predict([4, 2, 1, 3])
-        return jsonify(result=prediction.tolist())
+        return 'Dynamic Template Here'
 
 
 # TODO
@@ -36,4 +35,4 @@ def home():
     return render_template('index.html')
 
 if __name__ == '__main__':
-    app.run(debug=True, host='0.0.0.0')
+    app.run(debug=True, host='0.0.0.0', port=5000)

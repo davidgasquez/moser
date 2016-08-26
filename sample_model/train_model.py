@@ -29,7 +29,7 @@ y = le.fit_transform(iris['class'])
 X = iris.drop('class', axis=1)
 
 # Train classifier
-clf = RandomForestClassifier()
+clf = RandomForestClassifier(warm_start=True)
 clf.fit(X, y)
 
 # Picke classifier

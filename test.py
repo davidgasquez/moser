@@ -1,6 +1,6 @@
 import requests
 import cloudpickle
-import time
+from textblob import TextBlob
 
 # TODO: Use py.test and automate with Travis
 
@@ -11,7 +11,7 @@ filename = 'sample_model/model.pkl'
 # Set the model
 with open(filename, 'rb') as f:
     model = f.read()
-    r = requests.put(base_url + '/api/models/test', data=model)
+    r = requests.put(base_url + '/api/models/iris', data=model)
     print(r)
 
 # Make predictions from JSON
@@ -23,18 +23,17 @@ data = {
         [1, 4, 8, 1]
     ]
 }
-r = requests.post(base_url + '/api/models/test/predict', json=data)
+r = requests.post(base_url + '/api/models/iris/predict', json=data)
 print(r, r.json())
 
 
-def f(x, y):
-    time.sleep(5)
-    return x * 3 + y
+def correct(text):
+    return str(TextBlob(text).correct())
 
-pkl = cloudpickle.dumps(f)
-r = requests.put(base_url + '/api/functions/my_function', data=pkl)
+pkl = cloudpickle.dumps(correct)
+r = requests.put(base_url + '/api/functions/correct', data=pkl)
 print(r)
 
-json = {'y': 3, 'x': 20}
-r = requests.post(base_url + '/api/functions/my_function/run', json=json)
+json = {'text': 'Some mmen just wamt to watch the world burn'}
+r = requests.post(base_url + '/api/functions/correct/run', json=json)
 print(r, r.text)

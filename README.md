@@ -7,6 +7,11 @@ trained model and use it making RESTful API calls.
 You can test it running the container (`make`) and heading
 to [http://localhost:5000](http://localhost:5000)
 
+## Features
+
+- Models
+- Functions
+
 ## Get Started
 
 1. Generate the model `pkl` file - `cd sample_model && python train_model.py`

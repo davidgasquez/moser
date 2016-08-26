@@ -55,11 +55,17 @@ def run_function(name):
     """Executed a loaded function."""
     js = request.get_json()
 
-    if list(js.keys()) != list(functions[name].__code__.co_varnames):
-        return 'Different arguments or order provided.'
+    variable_names = functions[name].__code__.co_varnames
+    if set(js.keys()) != set(variable_names):
+        return 'Different arguments provided.'
+
+    # Order parameters
+    parameters = [js[var] for var in variable_names]
+
+    # TODO: Handle optional parameters
 
     # Load function
-    result = functions[name](*js.values())
+    result = functions[name](*parameters)
 
     return jsonify(result)
 
@@ -98,6 +104,7 @@ def print_function(name):
 def list_functions():
         """List loaded functions."""
         return jsonify(list(functions.keys()))
+
 
 @app.route('/models', methods=['GET'])
 def list_models():

@@ -27,12 +27,12 @@ print(r, r.json())
 
 
 def f(x, y):
-    return x + y
+    return x * 3 + y
 
 pkl = cloudpickle.dumps(f)
 r = requests.put(base_url + '/api/functions/my_function', data=pkl)
 print(r)
 
-json = {'a': 3, 'b': 5}
+json = {'y': 3, 'x': 20}
 r = requests.post(base_url + '/api/functions/my_function/run', json=json)
-print(r, r.json())
+print(r, r.text)

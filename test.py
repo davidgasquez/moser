@@ -1,4 +1,5 @@
 import requests
+import cloudpickle
 
 # TODO: Use py.test and automate with Travis
 
@@ -10,10 +11,11 @@ filename = 'sample_model/model.pkl'
 with open(filename, 'rb') as f:
     model = f.read()
     r = requests.put(base_url + '/api/models/test', data=model)
+    print(r)
 
 # Make predictions from JSON
 data = {
-    "column_names": ["a", "b", "c", "d"],
+    "features": ["sepal_length", "sepal_width", "petal_length", "petal_width"],
     "values": [
         [1, 4, 1, 1],
         [2, 0, 6, 1],
@@ -23,8 +25,14 @@ data = {
 r = requests.post(base_url + '/api/models/test/predict', json=data)
 print(r, r.json())
 
-# Make predictions from CSV
-with open('sample_model/unknown.csv', 'rb') as f:
-    unknown_data = f.read()
-    r = requests.put(base_url + '/api/models/test/predict', data=unknown_data)
-    print(r, r.json())
+
+def f(x, y):
+    return x + y
+
+pkl = cloudpickle.dumps(f)
+r = requests.put(base_url + '/api/functions/my_function', data=pkl)
+print(r)
+
+json = {'a': 3, 'b': 5}
+r = requests.post(base_url + '/api/functions/my_function/run', json=json)
+print(r, r.json())

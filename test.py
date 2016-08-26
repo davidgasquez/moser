@@ -1,5 +1,6 @@
 import requests
 import cloudpickle
+import time
 
 # TODO: Use py.test and automate with Travis
 
@@ -27,6 +28,7 @@ print(r, r.json())
 
 
 def f(x, y):
+    time.sleep(5)
     return x * 3 + y
 
 pkl = cloudpickle.dumps(f)

@@ -8,7 +8,8 @@ from sklearn.externals import joblib
 import pandas as pd
 
 # Available Models
-clfs = {}
+models = {}
+functions = {}
 
 # Generate Flask application
 app = Flask(__name__)
@@ -34,23 +35,44 @@ def predict_api(name):
     """
     js = request.get_json()
 
-    if clfs[name]['features'] != js['features']:
+    if models[name]['features'] != js['features']:
         return 'Not the sames features or order.'
 
     X = pd.DataFrame(js['values'], columns=js['features'])
 
-    # Preprocessing function
-    if clfs.get(name).get('preprocessing'):
-        f = cloudpickle.loads(clfs[name]['preprocessing'])
+    # Preprocessing function (move to own API call)
+    if models.get(name).get('preprocessing'):
+        f = cloudpickle.loads(models[name]['preprocessing'])
         X = f(X)
 
-    prediction = clfs.get(name)['model'].predict(X)
+    prediction = models.get(name)['model'].predict(X)
 
     return jsonify(result=prediction.tolist())
 
 
+@app.route('/api/functions/<name>/run', methods=['POST'])
+def run_function(name):
+    """Executed a loaded function."""
+    js = request.get_json()
+
+    if list(js.keys()) != list(functions[name].__code__.co_varnames):
+        return 'Different arguments or order provided.'
+
+    # Load function
+    result = functions[name](*js.values())
+
+    return jsonify(result)
+
+
+@app.route('/api/functions/<name>', methods=['PUT'])
+def load_function(name):
+    """Load a function into memory."""
+    functions[name] = cloudpickle.loads(request.data)
+    return jsonify(success=True)
+
+
 @app.route('/api/models/<name>', methods=['PUT'])
-def model(name):
+def load_model(name):
     """Load a model into memory."""
     tmp_path = '/tmp/{}.plk'.format(name)
 
@@ -59,7 +81,7 @@ def model(name):
         f.write(request.data)
 
     # This approach will keep all the models in memory
-    clfs[name] = joblib.load(tmp_path)
+    models[name] = joblib.load(tmp_path)
 
     # Remove from disk
     os.remove(tmp_path)
@@ -67,15 +89,26 @@ def model(name):
     return jsonify(success=True)
 
 
+@app.route('/functions/<name>', methods=['GET'])
+def print_function(name):
+    return jsonify(name=functions[name].__name__)
+
+
+@app.route('/functions', methods=['GET'])
+def list_functions():
+        """List loaded functions."""
+        return jsonify(list(functions.keys()))
+
 @app.route('/models', methods=['GET'])
 def list_models():
         """List loaded models."""
-        return jsonify(list(clfs.keys()))
+        return jsonify(list(models.keys()))
 
 
 @app.route('/models/<name>', methods=['GET'])
 def print_model(name):
-        return jsonify(list(clfs[name]))
+        # TODO: More Verbosity
+        return jsonify(list(models[name]))
 
 
 @app.route('/models/<name>/predict', methods=['GET'])

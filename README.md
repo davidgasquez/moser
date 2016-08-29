@@ -20,5 +20,4 @@ to [http://localhost:5000](http://localhost:5000)
 4. Make some requests (I've been using Postman)
     - Add a model to the API with a `PUT` call to `/api/models/your_model_name`
     - Use the previous model calling `/api/models/your_model_name/predict`
-        - `PUT`: Add a CSV file like `sample_model/unknown.csv`
         - `POST`: Single JSON with the feature names and values

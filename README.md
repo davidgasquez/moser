@@ -1,18 +1,18 @@
 # Scikit Learn Flask API
 
-Basic Machine Learning API to make predictions in real time from a
-picked Scikit Learn model. This will make super easy setup a
-trained model and use it making RESTful API calls.
-
-You can test it running the container (`make`) and heading
-to [http://localhost:5000](http://localhost:5000)
+A simple way to productionize your Machine Learning models. The goal of _NAME_
+is making super easy to setup any kind of predictive model in a server and
+interact with it through RESTful API calls.
 
 ## Features
 
-- Models
-- Functions
+- Set Models
+- Set Functions
 
 ## Get Started
+
+You can test it running the container (`make`) and heading
+to [http://localhost:5000](http://localhost:5000)
 
 1. Generate the model `pkl` file - `cd sample_model && python train_model.py`
 2. Build the container `make build`

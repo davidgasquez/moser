@@ -1,8 +1,8 @@
-# Scikit Learn Flask API
+# Moser: A Model Server Prototype
 
-A simple way to productionize your Machine Learning models. The goal of _NAME_
-is making super easy to setup any kind of predictive model in a server and
-interact with it through RESTful API calls.
+Moser is a simple way to serve your Machine Learning models. The goal of Moser
+is making super easy to setup any kind of predictive model in a production
+server and being able to interact with them through RESTful API calls.
 
 ## Features
 
@@ -16,8 +16,9 @@ to [http://localhost:5000](http://localhost:5000)
 
 1. Generate the model `pkl` file - `cd sample_model && python train_model.py`
 2. Build the container `make build`
-3. Run the API `make`
-4. Make some requests (I've been using Postman)
+3. Run the API with `make`
+4. Make some requests (I've been using Postman):
     - Add a model to the API with a `PUT` call to `/api/models/your_model_name`
-    - Use the previous model calling `/api/models/your_model_name/predict`
-        - `POST`: Single JSON with the feature names and values
+    - Use the previous model calling `/api/models/your_model_name/predict` with
+      a `POST` request providing a single JSON with the feature names and
+      values.

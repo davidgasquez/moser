@@ -23,7 +23,9 @@ to [http://localhost:5000](http://localhost:5000)
       a `POST` request providing a single JSON with the feature names and
       values.
 
-## Example
+### Example
+
+Generate the `pkl` file using `joblib`:
 
 ```python
 import pandas as pd
@@ -40,4 +42,33 @@ clf = RandomForestClassifier()
 clf.fit(data.drop('target', axis=1), data['target'])
 
 joblib.dump(clf, 'model.pkl', compress=9)
+```
+
+Once we have the file we need to run the server with `make` and make some API
+requests:
+
+```python
+import requests
+
+base_url = 'http://localhost:5000'
+
+filename = 'model.pkl'
+
+# Set the model
+with open(filename, 'rb') as f:
+    model = f.read()
+    r = requests.put(base_url + '/api/models/iris', data=model)
+    print(r)
+
+# Make predictions from JSON
+data = {
+    "features": ["sepal_length", "sepal_width", "petal_length", "petal_width"],
+    "values": [
+        [1, 4, 1, 1],
+        [2, 0, 6, 1],
+        [1, 4, 8, 1]
+    ]
+}
+r = requests.post(base_url + '/api/models/iris/predict', json=data)
+print(r, r.json())
 ```

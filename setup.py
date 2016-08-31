@@ -4,7 +4,7 @@ from setuptools import setup, find_packages
 setup(
     name='moser',
     version='0.1',
-    description='Airbnb Kaggle competition code.',
+    description='Moser is a simple way to serve your Machine Learning models.',
     author='David Gasquez',
     author_email='davidgasquez@gmail.com',
     license='MIT',

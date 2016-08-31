@@ -4,10 +4,10 @@
 all: run
 
 build:
-	docker build -t skflask .
+	docker build -t moser .
 
 run:
-	docker run -it --rm -p 5000:5000 skflask
+	docker run -it --rm -p 5000:5000 moser
 
 dev:
-	docker run -v $(PWD)/skflask:/app -it --rm -p 5000:5000 skflask
+	docker run -v $(PWD)/moser:/app -it --rm -p 5000:5000 moser

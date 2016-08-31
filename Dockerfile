@@ -17,7 +17,7 @@ COPY requirements.yml /tmp/requirements.yml
 RUN conda env update -f=/tmp/requirements.yml
 
 # Add the application
-COPY skflask /app
+COPY moser /app
 WORKDIR /app
 
 CMD ["python", "app.py"]

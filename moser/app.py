@@ -12,7 +12,7 @@ models = {}
 functions = {}
 
 # Generate Flask application
-app = Flask(__name__)
+app = Flask('moser')
 
 
 @app.errorhandler(404)

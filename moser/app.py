@@ -20,7 +20,7 @@ def not_found(error):
     return render_template('error.html'), 404
 
 
-@app.route('/api/models/<name>/predict', methods=['POST'])
+@app.route('/api/models/<name>/predict', methods=['GET'])
 def predict_api(name):
     """Make a prediction with a model and return the result.
 
@@ -50,7 +50,7 @@ def predict_api(name):
     return jsonify(result=prediction.tolist())
 
 
-@app.route('/api/functions/<name>/run', methods=['POST'])
+@app.route('/api/functions/<name>/run', methods=['GET'])
 def run_function(name):
     """Executed a loaded function."""
     js = request.get_json()

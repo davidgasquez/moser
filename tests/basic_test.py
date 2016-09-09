@@ -23,7 +23,7 @@ data = {
         [1, 4, 8, 1]
     ]
 }
-r = requests.post(base_url + '/api/models/iris/predict', json=data)
+r = requests.get(base_url + '/api/models/iris/predict', json=data)
 print(r, r.json())
 
 
@@ -35,5 +35,5 @@ r = requests.put(base_url + '/api/functions/correct', data=pkl)
 print(r)
 
 json = {'text': 'Some mmen just wamt to watch the world burn'}
-r = requests.post(base_url + '/api/functions/correct/run', json=json)
+r = requests.get(base_url + '/api/functions/correct/run', json=json)
 print(r, r.text)

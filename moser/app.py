@@ -1,13 +1,14 @@
+import os
+import cloudpickle
+import pandas as pd
+from sklearn.externals import joblib
+
 from flask import Flask
 from flask import render_template
 from flask import jsonify
 from flask import request
-import os
-import cloudpickle
-from sklearn.externals import joblib
-import pandas as pd
 
-# Available Models
+# Available models and functions
 models = {}
 functions = {}
 
@@ -17,7 +18,7 @@ app = Flask('moser')
 
 @app.errorhandler(404)
 def not_found(error):
-    return render_template('error.html'), 404
+    return jsonify(error=error.description), 404
 
 
 @app.route('/api/models/<name>/predict', methods=['GET'])
@@ -36,7 +37,7 @@ def predict_api(name):
     js = request.get_json()
 
     if models[name]['features'] != js['features']:
-        return 'Not the sames features or order.'
+        return jsonify(error='Not the sames features or order.')
 
     X = pd.DataFrame(js['values'], columns=js['features'])
 

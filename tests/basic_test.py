@@ -23,7 +23,7 @@ data = {
         [1, 4, 8, 1]
     ]
 }
-r = requests.get(base_url + '/api/models/iris/predict', json=data)
+r = requests.put(base_url + '/api/models/iris/predict', json=data)
 print(r, r.json())
 
 

@@ -21,7 +21,7 @@ def not_found(error):
     return jsonify(error=error.description), 404
 
 
-@app.route('/api/models/<name>/predict', methods=['GET'])
+@app.route('/api/models/<name>/predict', methods=['POST'])
 def predict_api(name):
     """Make a prediction with a model and return the result.
 

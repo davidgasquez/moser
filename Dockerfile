@@ -1,4 +1,5 @@
 FROM debian:jessie
+MAINTAINER David Gasquez <davidgasquez@gmail.com>
 
 RUN apt-get update -y && \
     apt-get install --no-install-recommends -y -q curl bzip2 && \

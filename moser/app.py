@@ -4,7 +4,6 @@ import pandas as pd
 from sklearn.externals import joblib
 
 from flask import Flask
-from flask import render_template
 from flask import jsonify
 from flask import request
 
@@ -119,14 +118,10 @@ def print_model(name):
         return jsonify(list(models[name]))
 
 
-@app.route('/models/<name>/predict', methods=['GET'])
-def predict(name):
-        return 'Dynamic Template Here'
-
-
 @app.route('/')
 def home():
-    return render_template('index.html')
+    return jsonify(status='ok')
+
 
 if __name__ == '__main__':
     app.run(debug=True, host='0.0.0.0', port=5000)

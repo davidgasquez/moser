@@ -5,7 +5,7 @@ NAME = davidgasquez/moser:latest
 
 all: run
 
-build:
+build proyect:
 	docker build -t $(NAME) .
 
 run:
